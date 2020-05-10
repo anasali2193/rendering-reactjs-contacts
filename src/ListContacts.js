@@ -13,7 +13,7 @@ function ListContacts (props){
                 className='contact-avatar'
                 style={{
                     backgroundImage :`url(${contact.avatarURL})`
-                }}
+                }} 
                  >
                 </div>
                 <div className ='contact-details'>
