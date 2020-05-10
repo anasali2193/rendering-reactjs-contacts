@@ -1,12 +1,53 @@
 import React from 'react';
 
-function ListContacts (props){
-    const {contacts, onDeleteContact } = props
+class ListContacts extends React.Component{
+    state={
+        query : ''
+    }
+
+    clearQeuer = ()=> {
+        this.updateState('')
+
+    }
+    updateState = (query) =>{
+        this.setState(()=>({
+            query : query.trim()
+        }))
+    }
+
+    render(){
+    const {contacts, onDeleteContact } = this.props
+    const Showingcontacts = this.state.query === '' 
+    ? contacts 
+    : contacts.filter((q)=>(
+        q.name.toLowerCase().includes(this.state.query.toLowerCase())
+    ))
     return(
+        <div className='list-contacts'>
+
+        <div className = 'list-contacts-top'>
+            <input
+                className='search-contacts'
+                type ='text'
+                placeholder ='Search Contacts'
+                value={this.state.query}
+                onChange = {(event)=> this.updateState(event.target.value)}
+            />
+
+
+        </div>
+
+        {Showingcontacts.length !== contacts.length && (
+            <div className= 'showing-contacts'>
+              <span>Now showing {Showingcontacts.length} of 
+              {contacts.length}</span>
+              <button onClick={this.clearQeuer}>Show all</button>
+            </div>
+        )}
         <ol className='contact-list'>
 
         
-            {contacts.map((contact)=>(
+            {Showingcontacts.map((contact)=>(
             <li key={contact.id} className='contact-list-item' >
                 
                 <div 
@@ -29,8 +70,9 @@ function ListContacts (props){
             ))
             }
         </ol>
+        </div>
     );
-
+}
 }
 
 export default ListContacts;
